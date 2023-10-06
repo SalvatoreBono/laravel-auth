@@ -12,7 +12,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::all();
+        return view("admin.projects.index", compact("projects"));
     }
 
     /**
@@ -20,7 +21,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.projects.create");
     }
 
     /**
@@ -28,38 +29,66 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "title" => "required|string",
+            "description" => "required|string",
+            "thumbnail" => "required|string",
+            "link" => "required|string",
+            "date" => "required|date",
+            "language" => "required|string",
+        ]);
+        $project = Project::create($data);
+        return redirect()->route("admin.projects.show", $project->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Project $project, $id)
     {
-        //
+        $project = Project::findOrFail($id);
+        return view("admin.projects.show", compact("project"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(Project $project, $id)
     {
-        //
+        $project = Project::findOrFail($id);
+        return view("admin.projects.edit", compact($project));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $project, $id)
     {
-        //
+        $project = Project::findOrFail($id);
+
+        $data = $request->validate([
+            "title" => "required|string",
+            "description" => "required|string",
+            "thumbnail" => "required|string",
+            "link" => "required|string",
+            "date" => "required|date",
+            "language" => "required|string",
+        ]);
+
+        $project->update($data);
+
+        return redirect()->route("admin.projects.show", compact($project));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project, $id)
     {
-        //
+        $project = Project::findOrFail($id);
+
+        $project->delete();
+
+        return redirect()->route("admin.projects.index");
     }
 }

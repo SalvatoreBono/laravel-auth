@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory;
+    protected $casts = [
+        "date" => "date",
+    ];
+    protected $fillable = [
+        "title",
+        "description",
+        "thumbnail",
+        "link",
+        "date",
+        "language",
+    ];
 }
