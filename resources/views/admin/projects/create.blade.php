@@ -11,8 +11,8 @@
     {{-- 'action' => route('names.store'), = specifichiamo dove vogliamo inviare i dati --}}
     {{--  'method' => 'POST', = specifichiamo il metodo su come devono essere inviati i dati  --}}
     {{-- 'name' => null,= assegniamo il valore null perchè non abbiamo nessun dato da stampare --}}
-    @include('names.forms.upsert', [
-        //'action' => route('names.store'),
+    @include('admin.projects.forms.upsert', [
+        'action' => route('admin.projects.store'),
         'method' => 'POST',
         'name' => null,
     ])

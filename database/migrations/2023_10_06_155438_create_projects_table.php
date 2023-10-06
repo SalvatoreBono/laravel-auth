@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
+            //creation of DB structure
             $table->id();
             $table->string("title");
             $table->text("description");
