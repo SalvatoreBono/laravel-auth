@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('layouts.app')
 @section('title', 'Edit')
 @section('content')
     {{-- @include('names.forms.upsert',= inserimento del componente upsert --}}
@@ -12,8 +12,9 @@
     {{-- 'method' => 'PUT', = specifichiamo il metodo su come devono essere inviati i dati. Questo metodo indica che stai cercando di effettuare un aggiornamento dell'elemento associato --}}
     {{-- 'name' => $name,= assegniamo il valore a name così da poterlo utilizzare nel value e poter visualizzare i dati da editare --}}
     @include('admin.projects.forms.upsert', [
-        'action' => route('admin.projects.update', project->id),
+        'action' => route('admin.projects.update', $project->id),
         'method' => 'PUT',
-        'name' => $name,
+        'project' => $project,
+        'btnBack' => route('admin.projects.show', $project->id),
     ])
 @endsection

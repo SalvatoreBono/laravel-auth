@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('layouts.app')
 @section('title', 'Create')
 @section('content')
     {{-- @include('names.forms.upsert',= inserimento del componente upsert --}}
@@ -14,6 +14,7 @@
     @include('admin.projects.forms.upsert', [
         'action' => route('admin.projects.store'),
         'method' => 'POST',
-        'name' => null,
+        'project' => null,
+        'btnBack' => route('admin.projects.index'),
     ])
 @endsection

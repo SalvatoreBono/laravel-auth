@@ -10,6 +10,7 @@ class Project extends Model
     use HasFactory;
     protected $casts = [
         "date" => "date",
+        "language" => "array",
     ];
     protected $fillable = [
         "title",

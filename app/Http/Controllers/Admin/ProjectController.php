@@ -38,14 +38,15 @@ class ProjectController extends Controller
             "date" => "required|date",
             "language" => "required|string",
         ]);
+        $data["language"] = explode(",", $data["language"]);
         $project = Project::create($data);
-        return redirect()->route("admin.projects.show", $project->id);
+        return redirect()->route("admin.projects.index", $project);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Project $project, $id)
+    public function show($id)
     {
         $project = Project::findOrFail($id);
         return view("admin.projects.show", compact("project"));
@@ -54,16 +55,16 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project, $id)
+    public function edit($id)
     {
         $project = Project::findOrFail($id);
-        return view("admin.projects.edit", compact($project));
+        return view("admin.projects.edit", compact("project"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project, $id)
+    public function update(Request $request, $id)
     {
         $project = Project::findOrFail($id);
 
@@ -75,16 +76,16 @@ class ProjectController extends Controller
             "date" => "required|date",
             "language" => "required|string",
         ]);
-
+        $data["language"] = explode(",", $data["language"]);
         $project->update($data);
 
-        return redirect()->route("admin.projects.show", compact($project));
+        return redirect()->route("admin.projects.show", compact("project"));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project, $id)
+    public function destroy($id)
     {
         $project = Project::findOrFail($id);
 
