@@ -94,7 +94,7 @@
             </div>
         </nav>
 
-        <main class="">
+        <main class="bg-home-page d-flex flex-column flex-grow-1 overflow-auto main-vh pt-3 pb-3">
             @yield('content')
         </main>
     </div>
