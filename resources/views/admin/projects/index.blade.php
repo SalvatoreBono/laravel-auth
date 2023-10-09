@@ -15,7 +15,7 @@
                     <div>{{ $project['date']->format('d/m/y') }}</div>
                     {{--  "implode" unisce gli elementi dell'array in una singola stringa, separando ciascun elemento con il ", " --}}
                     <div>Linguaggi utilizzati{{ implode(', ', $project['language']) }}</div>
-                    <a href="{{ route('admin.projects.show', $project->id) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ route('admin.projects.show', $project->slug) }}" class="btn btn-primary">Show</a>
                 </div>
             </div>
 

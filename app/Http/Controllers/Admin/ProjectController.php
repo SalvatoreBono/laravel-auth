@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectUpsertRequest;
 use App\Models\Project;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -34,6 +35,10 @@ class ProjectController extends Controller
     {
         //i dati inviati vengono validati tramite il from request
         $data = $request->validated();
+
+
+        $data["slug"] = $this->generateSlug($data["title"]);
+
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
 
@@ -45,16 +50,16 @@ class ProjectController extends Controller
         $project = Project::create($data);
 
         //l'utente viene reindirizzato a un'altra pagina
-        return redirect()->route("admin.projects.show", $project->id);
+        return redirect()->route("admin.projects.show", $project->slug);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($slug)
     {
-        //una query dove l'ID corrispondente a $id
-        $project = Project::findOrFail($id);
+        //una query dove lo slug corrispondente a $slug
+        $project = Project::where("slug", $slug)->first();
 
         //porta a una view dove si visualizzano i dettagli del singolo project.
         return view("admin.projects.show", compact("project"));
@@ -64,9 +69,10 @@ class ProjectController extends Controller
      * Show the form for editing the specified resource.
      */
     // è utilizzato per recuperare i dettagli di un singolo project specifico ed editarlo
-    public function edit($id)
+    public function edit($slug)
     {
-        $project = Project::findOrFail($id);
+        //una query dove lo slug corrispondente a $slug
+        $project = Project::where("slug", $slug)->first();
 
         //porta a una view per la modifica di un project
         return view("admin.projects.edit", compact("project"));
@@ -75,12 +81,18 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProjectUpsertRequest $request, $id)
+    public function update(ProjectUpsertRequest $request, $slug)
     {
-        $project = Project::findOrFail($id);
+        //una query dove lo slug corrispondente a $slug
+        $project = Project::where("slug", $slug)->first();
 
-        //i dati inviati vengono validati tramite il from request
         $data = $request->validated();
+
+        //se i due titoli sono diversi
+        if ($data["title"] !== $project->title) {
+            $data["slug"] = $this->generateSlug($data["title"]);
+        }
+        //i dati inviati vengono validati tramite il from request
 
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
@@ -89,20 +101,38 @@ class ProjectController extends Controller
         $project->update($data);
 
         //l'utente viene reindirizzato a un'altra pagina
-        return redirect()->route("admin.projects.show", compact("project"));
+        return redirect()->route("admin.projects.show", $project->slug);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::where("slug", $slug)->first();
 
         //Il metodo delete() elimina il singolo project associato
         $project->delete();
 
         //l'utente viene reindirizzato a un'altra pagina
         return redirect()->route("admin.projects.index");
+    }
+
+    protected function generateSlug($title)
+    {
+        // contatore da usare per avere un numero incrementale
+        $counter = 0;
+
+        do {
+            // creo uno slug e se il counter è maggiore di 0, concateno il counter
+            $slug = Str::slug($title) . ($counter > 0 ? "-" . $counter : "");
+
+            // cerco se esiste già un elemento con questo slug
+            $alreadyExists = Project::where("slug", $slug)->first();
+
+            $counter++;
+        } while ($alreadyExists); // finché esiste già un elemento con questo slug, ripeto il ciclo per creare uno slug nuovo
+
+        return $slug;
     }
 }

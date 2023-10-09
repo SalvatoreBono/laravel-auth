@@ -16,6 +16,7 @@ class Project extends Model
     //controllare quali dati possono essere inseriti o aggiornati 
     protected $fillable = [
         "title",
+        "slug",
         "description",
         "thumbnail",
         "link",

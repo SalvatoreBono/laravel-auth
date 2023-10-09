@@ -30,4 +30,15 @@ class ProjectUpsertRequest extends FormRequest
             "language" => "required|string",
         ];
     }
+    public function messages()
+    {
+        return [
+            "title.required" => "Il campo del titolo è obbligatorio.",
+            "description.required" => "Il campo della descrizione è obbligatorio.",
+            "thumbnail.required" => "Il campo della miniatura è obbligatoria.",
+            "link.required" => "Il campo del link è obbligatorio.",
+            "date.required" => "Il campo della data è obbligatorio.",
+            "language.required" => "Il campo dei linguaggi è obbligatorio.",
+        ];
+    }
 }
