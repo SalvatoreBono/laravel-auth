@@ -45,3 +45,6 @@ php artisan make:controller --resource UserController
 
 VISUALIZZARE LA LISTA DELLE ROUTE
 php artisan route:list
+
+GENERA UNA NUOVA RICHIESTA DI CONVALIDA
+php artisan make:request UserUpsertRequest
