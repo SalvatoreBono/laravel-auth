@@ -39,7 +39,7 @@
         </div>
         <div class="col-12">
             <label for="inputLink" class="form-label">Link</label>
-            <input type="text" class="form-control @error('link')
+            <input type="url" class="form-control @error('link')
                 is-invalid
             @enderror"
                 id="inputLink" name="link" value="{{ old('link', $project?->link) }}">

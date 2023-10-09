@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectUpsertRequest;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -30,17 +30,10 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProjectUpsertRequest $request)
     {
-        //i dati inviati vengono validati
-        $data = $request->validate([
-            "title" => "required|string",
-            "description" => "required|string",
-            "thumbnail" => "required|string",
-            "link" => "required|string",
-            "date" => "required|date",
-            "language" => "required|string",
-        ]);
+        //i dati inviati vengono validati tramite il from request
+        $data = $request->validated();
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
 
@@ -82,19 +75,12 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ProjectUpsertRequest $request, $id)
     {
         $project = Project::findOrFail($id);
 
-        //i dati modificati vengono validati
-        $data = $request->validate([
-            "title" => "required|string",
-            "description" => "required|string",
-            "thumbnail" => "required|string",
-            "link" => "required|string",
-            "date" => "required|date",
-            "language" => "required|string",
-        ]);
+        //i dati inviati vengono validati tramite il from request
+        $data = $request->validated();
 
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
