@@ -25,14 +25,12 @@
     @vite(['resources/js/app.js'])
 </head>
 
-<body>
+<body class="">
     <div id="app">
-
-
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar bg-navabar navbar-expand-md navbar-light">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                    <div class="logo_laravel">
+                    <div>
                         <img src="/img/image.png" alt="" style="width: 40px">
                     </div>
                     {{-- config('app.name', 'Laravel') --}}
@@ -41,7 +39,9 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                    <div class="pt-1 pb-1">
+                        <i class="fa-solid fa-bars fa-lg" style="color: #efeff1"></i>
+                    </div>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
