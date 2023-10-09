@@ -23,13 +23,20 @@ Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+/* I middleware sono filtri che possono essere applicati prima che queste raggiungano le azioni dei controller. Il middleware "auth" verifica che l'utente sia autenticato, ovvero che abbia effettuato l'accesso al sistema. Se l'utente non è autenticato, verrà reindirizzato alla pagina di login. Il middleware "verified" verifica che l'utente abbia verificato il proprio indirizzo email.  */
 Route::middleware(["auth", "verified"])
+
+    // ->prefix("admin")  l'URL iniziera sempre con il prefisso admin/
     ->prefix("admin")
+
+    // ->name("admin.")  il name iniziera sempre con il prefisso admin.
     ->name("admin.")
     ->group(function () {
-        Route::resource("projects", ProjectController::class);
-    });
 
+        // resource mi genera tutte le Route
+        Route::resource("projects", ProjectController::class);
+        //Avrò tutte le rotte con il prefisso URL  /admin/projects etc.. e i name saranno admin.projects.index etc..
+    });
 Route::middleware('auth')->group(function () {
     Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('profile.update');

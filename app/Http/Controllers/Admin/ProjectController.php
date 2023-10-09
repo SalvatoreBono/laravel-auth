@@ -13,6 +13,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        //recuperare tutti i project dal database 
         $projects = Project::all();
         return view("admin.projects.index", compact("projects"));
     }
@@ -22,6 +23,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        //porta a una view che  per la creazione di un nuovo project
         return view("admin.projects.create");
     }
 
@@ -30,6 +32,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        //i dati inviati vengono validati
         $data = $request->validate([
             "title" => "required|string",
             "description" => "required|string",
@@ -38,9 +41,18 @@ class ProjectController extends Controller
             "date" => "required|date",
             "language" => "required|string",
         ]);
+        // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
+
+        // $project = new Post();
+        // $project->fill($data);
+        // $project->save()
+
+        // Il ::create esegue il fill e il save in un unico comando
         $project = Project::create($data);
-        return redirect()->route("admin.projects.index", $project);
+
+        //l'utente viene reindirizzato a un'altra pagina
+        return redirect()->route("admin.projects.show", $project->id);
     }
 
     /**
@@ -48,16 +60,22 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
+        //una query dove l'ID corrispondente a $id
         $project = Project::findOrFail($id);
+
+        //porta a una view dove si visualizzano i dettagli del singolo project.
         return view("admin.projects.show", compact("project"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+    // è utilizzato per recuperare i dettagli di un singolo project specifico ed editarlo
     public function edit($id)
     {
         $project = Project::findOrFail($id);
+
+        //porta a una view per la modifica di un project
         return view("admin.projects.edit", compact("project"));
     }
 
@@ -68,6 +86,7 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($id);
 
+        //i dati modificati vengono validati
         $data = $request->validate([
             "title" => "required|string",
             "description" => "required|string",
@@ -76,9 +95,14 @@ class ProjectController extends Controller
             "date" => "required|date",
             "language" => "required|string",
         ]);
+
+        // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
+
+        // update fa un fill() + save()
         $project->update($data);
 
+        //l'utente viene reindirizzato a un'altra pagina
         return redirect()->route("admin.projects.show", compact("project"));
     }
 
@@ -89,8 +113,10 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($id);
 
+        //Il metodo delete() elimina il singolo project associato
         $project->delete();
 
+        //l'utente viene reindirizzato a un'altra pagina
         return redirect()->route("admin.projects.index");
     }
 }
