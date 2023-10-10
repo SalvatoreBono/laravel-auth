@@ -24,7 +24,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //porta a una view che  per la creazione di un nuovo project
+        //porta a una view per la creazione di un nuovo project
         return view("admin.projects.create");
     }
 
@@ -88,11 +88,10 @@ class ProjectController extends Controller
 
         $data = $request->validated();
 
-        //se i due titoli sono diversi
+        //se i due titoli sono diversi  genera un nuovo "slug" basato sul nuovo titolo.
         if ($data["title"] !== $project->title) {
             $data["slug"] = $this->generateSlug($data["title"]);
         }
-        //i dati inviati vengono validati tramite il from request
 
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
