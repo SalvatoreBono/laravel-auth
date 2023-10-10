@@ -48,3 +48,6 @@ php artisan route:list
 
 GENERA UNA NUOVA RICHIESTA DI CONVALIDA
 php artisan make:request UserUpsertRequest
+
+CREARE UN LINK NELLA CARTELLA /public/storage
+php artisan storage:link

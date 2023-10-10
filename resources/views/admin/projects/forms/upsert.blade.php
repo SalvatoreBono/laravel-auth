@@ -1,6 +1,6 @@
 <div class="container pt-3">
     {{-- action="{{ $action }}"= è un segnaposto  --}}
-    <form action="{{ $action }}" class="row g-3" method="POST">
+    <form action="{{ $action }}" class="row g-3" method="POST" enctype="multipart/form-data">
         @csrf()
         {{-- @method($method) = è un segnaposto --}}
         @method($method)
@@ -28,11 +28,11 @@
         </div>
         <div class="col-12">
             <label for="inputThumbnail" class="form-label">Miniatura</label>
-            <input type="text"
+            <input type="file" accept="image/*"
                 class="form-control @error('thumbnail')
                 is-invalid
             @enderror"
-                id="inputThumbnail" name="thumbnail" value="{{ old('thumbnail', $project?->thumbnail) }}">
+                id="inputThumbnail" name="thumbnail">
             @error('thumbnail')
                 <div class="invalid_feedback">{{ $message }}</div>
             @enderror

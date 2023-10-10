@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProjectUpsertRequest;
+use App\Http\Requests\ProjectStoreRequest;
+use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Project;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -31,16 +33,18 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProjectUpsertRequest $request)
+    public function store(ProjectStoreRequest $request)
     {
         //i dati inviati vengono validati tramite il from request
         $data = $request->validated();
-
 
         $data["slug"] = $this->generateSlug($data["title"]);
 
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
+
+        // per salvare quel file all’interno dello storage usiamo il comando Storage::put("sottocartella", $data["chiave_file"])
+        $data["thumbnail"] = Storage::put("projects", $data["thumbnail"]);
 
         // $project = new Post();
         // $project->fill($data);
@@ -81,7 +85,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProjectUpsertRequest $request, $slug)
+    public function update(ProjectUpdateRequest $request, $slug)
     {
         //una query dove lo slug corrispondente a $slug
         $project = Project::where("slug", $slug)->first();
@@ -95,6 +99,16 @@ class ProjectController extends Controller
 
         // language viene trasformato in un array
         $data["language"] = explode(",", $data["language"]);
+
+
+        // se la thumbnail ha un valore cambia la thum  e viene chiamato il metodo delete della classe Storage per eliminare il file, altrimenti metti quella di prima 
+        if (isset($data["thumbnail"])) {
+            $data["thumbnail"] = Storage::put("projects", $data["thumbnail"]);
+            Storage::delete($project["thumbnail"]);
+        } else {
+            $data["thumbnail"] =  $project["thumbnail"];
+        }
+
 
         // update fa un fill() + save()
         $project->update($data);
@@ -110,6 +124,10 @@ class ProjectController extends Controller
     {
         $project = Project::where("slug", $slug)->first();
 
+        //se $project["thumbnail"] ha un valore viene chiamato il metodo delete della classe Storage per eliminare il file
+        if ($project["thumbnail"]) {
+            Storage::delete($project["thumbnail"]);
+        }
         //Il metodo delete() elimina il singolo project associato
         $project->delete();
 

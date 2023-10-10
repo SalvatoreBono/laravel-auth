@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProjectUpsertRequest extends FormRequest
+class ProjectStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,23 +22,26 @@ class ProjectUpsertRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|string",
+            "title" => "required|string|max:255",
             "description" => "required|string",
-            "thumbnail" => "required|string",
-            "link" => "required|string",
+            "thumbnail" => "required|image",
+            "link" => "required|string|max:255",
             "date" => "required|date",
-            "language" => "required|string",
+            "language" => "required|string|max:255",
         ];
     }
     public function messages()
     {
         return [
             "title.required" => "Il campo del titolo è obbligatorio.",
+            "title.max" => "Lunghezza massima superata.",
             "description.required" => "Il campo della descrizione è obbligatorio.",
             "thumbnail.required" => "Il campo della miniatura è obbligatoria.",
             "link.required" => "Il campo del link è obbligatorio.",
+            "link.max" => "Lunghezza massima superata.",
             "date.required" => "Il campo della data è obbligatorio.",
             "language.required" => "Il campo dei linguaggi è obbligatorio.",
+            "language.max" => "Lunghezza massima superata.",
         ];
     }
 }
