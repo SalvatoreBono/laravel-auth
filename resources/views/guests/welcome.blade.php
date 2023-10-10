@@ -27,7 +27,7 @@
                                 <i class="fa-brands fa-instagram fa-xl"></i>
                             </div>
                         </a>
-                        <a class="nav-link" target="_blank" href="https://www.instagram.com/salvatore__bono/">
+                        <a class="nav-link" target="_blank" href="https://github.com/SalvatoreBono">
                             <div class="link-profile d-flex align-items-center justify-content-center">
                                 <i class="fa-brands fa-github fa-xl"></i>
                             </div>
