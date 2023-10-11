@@ -24,7 +24,7 @@ class ProjectStoreRequest extends FormRequest
         return [
             "title" => "required|string|max:255",
             "description" => "required|string",
-            "thumbnail" => "required|image",
+            "thumbnail" => "required|image|max:10240",
             "link" => "required|string|max:255",
             "date" => "required|date",
             "language" => "required|string|max:255",
@@ -37,6 +37,7 @@ class ProjectStoreRequest extends FormRequest
             "title.max" => "Lunghezza massima superata.",
             "description.required" => "Il campo della descrizione è obbligatorio.",
             "thumbnail.required" => "Il campo della miniatura è obbligatoria.",
+            "thumbnail.max" => "Dimensioni del file eccessive",
             "link.required" => "Il campo del link è obbligatorio.",
             "link.max" => "Lunghezza massima superata.",
             "date.required" => "Il campo della data è obbligatorio.",
